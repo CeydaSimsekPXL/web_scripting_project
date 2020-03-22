@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "sofie",
-      "friends": [2]
+      "friends": [2, 3]
     },
     {
       "id": 2,
