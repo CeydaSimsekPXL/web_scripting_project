@@ -24,6 +24,7 @@ function _handleError(error, output) {
 function loadScript() {
     fillSelect();
     document.getElementById("button_search_friends").addEventListener("click", searchFriends);
+    document.getElementById("post_person_button").addEventListener("click", addPerson);
 }
 
 function fillSelect() {
@@ -60,15 +61,6 @@ function searchFriends() {
             return _checkResponse(response);
         })
         .then((person) => {
-            /*
-            * opgave zegt: vriend van sofie is tim en geert --> false! geert is geen vriend van sofie
-            * dus ik heb oefening.json aangepast: sofie --> "friends": [2, 3]
-            * => logischer, mits het initieel al gaat om een array van vrienden
-            *
-            * volgens de normale opgave zou ik de vriend van sofie, en "de vriend van de vriend van sofie" moeten nemen
-            * == onlogisch want sofie heeft maar 1 vriend waarvan id = 2 (= tim)
-            * */
-
             friendsId = person.friends;
 
             if (friendsId.length !== 0) {
@@ -99,6 +91,33 @@ function searchFriends() {
             output.appendChild(document.createTextNode(`${personName} heeft vriend(en) ${friendsNames.join(", ")}`));
         })
         .catch((error) => _handleError(error, _errorOutput));
+}
+
+function addPerson() {
+    let name = document.getElementById("post_person_input").value;
+    let options = document.querySelectorAll("option");
+    let id;
+    if (options.length !== 0) {
+        id = Number(options[options.length - 1].value) + 1;
+    } else {
+        id = 1;
+    }
+
+    let person = {id: id, name: name, friends: []};
+
+    fetch(_url, {
+        method: "POST",
+        body: JSON.stringify(person),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+        .then((response) => {
+            return _checkResponse(response);
+        })
+        .then(fillSelect)
+        .catch((error) => _handleError(error));
 }
 
 // ************************* private members *************************
