@@ -1,8 +1,9 @@
 'use strict';
 
 // functions
-function loadScripts() {
+function loadScript() {
     fillSelect();
+    document.getElementById("button_search_friends").addEventListener("click", searchFriends);
 }
 
 function fillSelect() {
@@ -20,10 +21,10 @@ function fillSelect() {
 
 function searchFriends() {
     let output = document.getElementById("div_output");
-    let option = document.getElementById("select_person").options.selectedIndex;
-    let id = option.value;
+    let select = document.getElementById("select_person");
+    let id = select.options[select.selectedIndex].value;
 
-    fetch(_url)
+    fetch(_url + id)
         .then((response) => {
             if (response.status === 200) {
                 return response.json();
@@ -31,13 +32,10 @@ function searchFriends() {
                 throw new Error(String(response.status));
             }
         })
-        .then((person) => getPersons(person))
-        .then((friends) => getPersons(friends))
-        .catch((error) => handleError(error));
-}
+        .then((person) => {
 
-function getPersons(persons) {
-    
+        })
+        .catch((error) => handleError(error));
 }
 
 function handleError(error) {
@@ -45,7 +43,7 @@ function handleError(error) {
 }
 
 // members
-let _url = 'http://localhost:3000/persons';
+let _url = 'http://localhost:3000/persons/';
 
 // main
-window.addEventListener("load", loadScripts);
+window.addEventListener("load", loadScript);
