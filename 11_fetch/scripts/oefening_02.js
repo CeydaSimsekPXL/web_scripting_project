@@ -28,15 +28,22 @@ function loadScript() {
 
 function fillSelect() {
     let select = document.getElementById("select_person");
-    let persons = ["sofie", "tim", "geert"];
     let option;
 
-    for (let i = 0; i < persons.length; i++) {
-        option = document.createElement("option");
-        option.value = String(i + 1);
-        option.textContent = persons[i];
-        select.appendChild(option);
-    }
+    select.innerHTML = "";
+    fetch(_url)
+        .then((response) => {
+            return _checkResponse(response);
+        })
+        .then((persons) => {
+            for (let row in persons) {
+                option = document.createElement("option");
+                option.value = persons[row].id;
+                option.textContent = persons[row].name;
+                select.appendChild(option);
+            }
+        })
+        .catch((error) => _handleError(error));
 }
 
 function searchFriends() {
