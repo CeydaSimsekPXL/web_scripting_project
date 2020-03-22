@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<output id="output"></output>
+    <script>
+        functieMetFouten();
+        function functieMetFouten() {
+            /* Dit programma bevat fouten, verbeter ze */
+            let teller = 0;
+            let boodschap = "teller heeft waarde: ";
+            boodschap += teller;
+
+            document.getElementById("output").appendChild(document.createTextNode(boodschap)).appendChild(document.createElement("br"));
+
+            teller = teller + 10;
+
+            if (teller > 5) {
+                boodschap = document.createElement("b").appendChild(document.createTextNode("Afgelopen"));
+                boodschap.appendChild(document.createTextNode(", met waarde: " + teller));
+                document.getElementById("output").appendChild(boodschap);
+            }
+        }
+    </script>
+</body>
+</html>
