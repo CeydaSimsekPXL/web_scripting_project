@@ -3,6 +3,14 @@
 // ------------------------- functions -------------------------
 // --------------- private ---------------
 // fetch
+function _fetchGet(filter) {
+    _output.innerHTML = "";
+    fetch(`${_url}/${filter}`)
+        .then((response) => _checkResponse(response))
+        .then((performances) => _show(performances))
+        .catch((error) => _exceptionHandling(error));
+}
+
 function _checkResponse(response) {
     if (response.ok) {
         return response.json();
@@ -38,14 +46,23 @@ function _show(data) {
 function handleLoad() {
     _output = document.getElementById("output");
     document.getElementById("get_all_button").addEventListener("click", getAll);
+    document.getElementById("get_by_date_button").addEventListener("click", getByDate);
+    document.getElementById("get_by_id_button").addEventListener("click", getById);
 }
 
 // fetch
 function getAll() {
-    fetch(_url)
-        .then((response) => _checkResponse(response))
-        .then((performances) => _show(performances))
-        .catch((error) => _exceptionHandling(error));
+    _fetchGet("");
+}
+
+function getByDate() {
+    let date = document.getElementById("get_by_date_input").value;
+    _fetchGet(`?play_date=${date}`);
+}
+
+function getById() {
+    let id = document.getElementById("get_by_id_input").value;
+    _fetchGet(`?id=${id}`);
 }
 
 // ------------------------- declaration -------------------------
