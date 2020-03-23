@@ -4,7 +4,6 @@
 // --------------- private ---------------
 // fetch
 function _fetchGet(filter) {
-    _output.innerHTML = "";
     fetch(`${_url}/${filter}`)
         .then((response) => _checkResponse(response))
         .then((performances) => _show(performances))
@@ -28,6 +27,7 @@ function _show(data) {
     let table = document.createElement("table");
     let tr, td;
 
+    _output.innerHTML = "";
     for (let i = 0; i < data.length; i++) {
         tr = document.createElement("tr");
         for (let key in data[i]) {
@@ -48,6 +48,7 @@ function handleLoad() {
     document.getElementById("get_all_button").addEventListener("click", getAll);
     document.getElementById("get_by_date_button").addEventListener("click", getByDate);
     document.getElementById("get_by_id_button").addEventListener("click", getById);
+    document.getElementById("post_button").addEventListener("click", post);
 }
 
 // fetch
@@ -63,6 +64,25 @@ function getByDate() {
 function getById() {
     let id = document.getElementById("get_by_id_input").value;
     _fetchGet(`?id=${id}`);
+}
+
+function post() {
+    let name = document.getElementById("post_name_input").value;
+    let date = document.getElementById("post_date_input").value;
+    let description = document.getElementById("post_description_input").value;
+    let performance = {name, play_date: date, description};
+
+    fetch(_url, {
+        method: "POST",
+        body: JSON.stringify(performance),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+        .then((response) => _checkResponse(response))
+        .then(performance => _fetchGet(`?id=${performance.id}`))
+        .catch((error) => _exceptionHandling(error));
 }
 
 // ------------------------- declaration -------------------------
