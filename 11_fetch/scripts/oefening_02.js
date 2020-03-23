@@ -95,15 +95,7 @@ function searchFriends() {
 
 function addPerson() {
     let name = document.getElementById("post_person_input").value;
-    let options = document.querySelectorAll("option");
-    let id;
-    if (options.length !== 0) {
-        id = Number(options[options.length - 1].value) + 1;
-    } else {
-        id = 1;
-    }
-
-    let person = {id: id, name: name, friends: []};
+    let person = {name: name, friends: []};
 
     fetch(_url, {
         method: "POST",
